@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:pokedex/common/error/failure.dart';
 import 'package:pokedex/common/models/pokemon.dart';
 import 'package:pokedex/common/repositories/pokemon_repository.dart';
+import 'package:pokedex/features/home/pages/home_error.dart';
 import 'package:pokedex/features/home/pages/home_loading.dart';
 import 'package:pokedex/features/home/pages/home_screen.dart';
 
@@ -8,52 +10,36 @@ class HomeContainer extends StatelessWidget {
   const HomeContainer({super.key, required this.repository});
   final IPokemonRepository repository;
 
-  // variável que receberá o Future que vai ser observado.
-  
-
   @override
   Widget build(BuildContext context) {
-    // Usa o FutureBuilder para reconstruir a UI automaticamente
-    // quando o estado do Future (listFuture) mudar.
+    //usa o FutureBuilder para ficar observando a busca de Pokémons.
     return FutureBuilder<List<Pokemon>>(
-      // Passa o Future que será monitorado pelo widget.
-      future:  repository.getAllPokemons(),  
-      // A função builder é chamada sempre que o estado do Future muda.
-      // O `snapshot` contém o estado atual, dados ou erro do Future.
+      //qual busca queremos monitorar?
+      future: repository.getAllPokemons(),
+
+      //o que fazer em cada momento da busca?
       builder: (context, snapshot) {
-        // 1. TRATAMENTO DO ESTADO DE CARREGAMENTO (LOADING)
-        // Se a conexão ainda estiver em espera (waiting)...
+        //a busca ainda não terminou.
         if (snapshot.connectionState == ConnectionState.waiting) {
-          // ...retorna o widget de loading para informar o usuário.
-          return const HomeLoading();
+          return const HomeLoading(); // Mostra o carregando
         }
 
-        // 2. TRATAMENTO DO ESTADO DE ERRO
-        // Se o Future terminou (done) e contém um erro (hasError)...
+        //a busca terminou, mas veio com erro
         if (snapshot.hasError) {
-          // ...retorna um widget que exibe a mensagem de erro.
-          return Center(
-            child: Text(
-              'Erro: ${snapshot.error.toString()}',
-              textAlign: TextAlign.center,
-              style: const TextStyle(color: Colors.red),
-            ),
+          return HomeError(
+            error: (snapshot.error as Failure).message!,
           );
         }
 
-        // 3. TRATAMENTO DO ESTADO DE SUCESSO
-        // Se o Future terminou (done) e contém dados (hasData)...
-        if (snapshot.hasData) {
-          // ...retorna a tela principal, passando a lista de Pokémon carregada.
-          // O "!" (bang operator) é usado aqui pois snapshot.hasData garante que .data não é nulo.
+        //a busca terminou, e os dados chegaram!
+        if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
+          //passa a lista de Pokémons (snapshot.data) para a tela principal
           return HomePage(list: snapshot.data!);
         }
 
-        // 4. RETORNO PADRÃO (SAFETY NET)
-        // Se nenhum dos casos acima for satisfeito (ex: done sem dados)...
-        // ...retorna um widget de fallback.
+        //fallback se alguma coisa estranho acontecer
         return const Center(
-          child: Text('Nenhum Pokémon encontrado. Tente novamente.'),
+          child: Text('algo deu errado. Tente novamente'),
         );
       },
     );
