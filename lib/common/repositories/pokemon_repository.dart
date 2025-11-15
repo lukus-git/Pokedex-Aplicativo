@@ -15,17 +15,19 @@ class PokemonRepository implements IPokemonRepository {
   PokemonRepository({required this.dio});
   @override
   Future<List<Pokemon>> getAllPokemons() async {
+    
     try {
       //aqui vai na net e pega os dados
       final response = await dio.get(ApiConsts.allPokemonsURL);
 
       //pega o texto estranho (JSON) e transforma em um dicionário (Map)
-      final json = jsonDecode(response.data) as Map<String, dynamic>;
-
+      final json = jsonDecode(response.data.toString()) as Map<String, dynamic>;
+      
       //dentro do dicionário pega só a lista que está na chave 'pokemon'
       final list = json['pokemon'] as List<dynamic>;
 
       //pega cada item da lista e transforma ele em um objeto Pokemon real e Depois retorna a lista final
+      // Linha 29: Onde o erro real de Map-String está
       return list.map((e) => Pokemon.fromMap(e)).toList();
     } catch (e) {
       //aqui é se caso a net cair ou algum outro erro

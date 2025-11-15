@@ -3,7 +3,7 @@ class Pokemon {
   final String image; //imagem dele
   final List<String> type; //aqui vai ser o tipo do pokemon
   final int id; //sua identificacao
-  final int num; //numero de cada pokemon
+  final String num; //numero de cada pokemon
 
   //pega o valor de cada chave e tranforma em seu nome, id e etc...
   factory Pokemon.fromMap(Map<String, dynamic> json) {
