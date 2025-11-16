@@ -16,7 +16,9 @@ class HomePage extends StatelessWidget {
         itemCount: list.length,
         itemBuilder: (BuildContext context, int index) {
           return ListTile(
+            //aqui estou passando o nome dos pokemons em forma de lista
             title: Text(list[index].name),
+            //ao clicar em alugum nome da lista vai para a pagina de detalhes
             onTap: () => onItemTap!('/details', DetailArguments(name: list[index].name),),
           );
         },

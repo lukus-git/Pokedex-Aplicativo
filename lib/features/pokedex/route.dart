@@ -12,6 +12,7 @@ class PokedexRoute extends StatelessWidget {
   Widget build(BuildContext context) {
     return Navigator(
       initialRoute: '/',
+      //settings serve para pegar o nome da rota e levar para o destino da pagina
       onGenerateRoute: (settings) {
         switch (settings.name) {
           case '/':

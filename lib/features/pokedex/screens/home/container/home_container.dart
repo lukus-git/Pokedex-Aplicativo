@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:pokedex/common/error/failure.dart';
 import 'package:pokedex/common/models/pokemon.dart';
 import 'package:pokedex/common/repositories/pokemon_repository.dart';
+import 'package:pokedex/common/widgets/po_error.dart';
+import 'package:pokedex/common/widgets/po_loading.dart';
 import 'package:pokedex/features/pokedex/screens/details/container/detail_container.dart';
-import 'package:pokedex/features/pokedex/screens/home/pages/home_error.dart';
-import 'package:pokedex/features/pokedex/screens/home/pages/home_loading.dart';
 import 'package:pokedex/features/pokedex/screens/home/pages/home_screen.dart';
 
 class HomeContainer extends StatelessWidget {
@@ -23,12 +23,12 @@ class HomeContainer extends StatelessWidget {
       builder: (context, snapshot) {
         //a busca ainda não terminou.
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const HomeLoading(); // Mostra o carregando
+          return const PoLoading(); // Mostra o carregando
         }
 
         //a busca terminou, mas veio com erro
         if (snapshot.hasError) {
-          return HomeError(
+          return PoError(
             error: (snapshot.error as Failure).message!,
           );
         }

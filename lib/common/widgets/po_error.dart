@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+//aqui e o arquivo padrão de erro assim fica melhor e mais organizado
 
 class PoError extends StatelessWidget {
   const PoError({super.key, this.error});

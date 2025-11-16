@@ -27,7 +27,6 @@ class PokemonRepository implements IPokemonRepository {
       final list = json['pokemon'] as List<dynamic>;
 
       //pega cada item da lista e transforma ele em um objeto Pokemon real e Depois retorna a lista final
-      // Linha 29: Onde o erro real de Map-String está
       return list.map((e) => Pokemon.fromMap(e)).toList();
     } catch (e) {
       //aqui é se caso a net cair ou algum outro erro
