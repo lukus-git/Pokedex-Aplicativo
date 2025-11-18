@@ -17,7 +17,7 @@ class PokemonRepository implements IPokemonRepository {
   Future<List<Pokemon>> getAllPokemons() async {
     
     try {
-      //aqui vai na net e pega os dados
+      //aqui vai na net e pega os dados da api
       final response = await dio.get(ApiConsts.allPokemonsURL);
 
       //pega o texto estranho (JSON) e transforma em um dicionário (Map)
