@@ -5,7 +5,7 @@ import 'package:pokedex/common/repositories/pokemon_repository.dart';
 import 'package:pokedex/common/widgets/po_error.dart';
 import 'package:pokedex/common/widgets/po_loading.dart';
 import 'package:pokedex/features/pokedex/screens/details/container/detail_container.dart';
-import 'package:pokedex/features/pokedex/screens/home/pages/home_screen.dart';
+import 'package:pokedex/features/pokedex/screens/home/pages/home_page.dart';
 
 class HomeContainer extends StatelessWidget {
   const HomeContainer({super.key, required this.repository, this.onItemTap});

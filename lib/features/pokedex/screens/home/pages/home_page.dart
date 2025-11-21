@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pokedex/common/models/pokemon.dart';
 import 'package:pokedex/features/pokedex/screens/details/container/detail_container.dart';
-import 'package:pokedex/features/pokedex/screens/home/pages/pokemon_item_widg.dart';
+import 'package:pokedex/features/pokedex/screens/home/pages/widgets/pokemon_item_widg.dart';
 
 //aqui vai ser a tela inicial (home)
 
@@ -47,6 +47,7 @@ class HomePage extends StatelessWidget {
               .map((e) => PokemonItemWidg(
                     pokemon: e,
                     onTap: onItemTap,
+                    index: list.indexOf(e ),
                   ))
               .toList(),
         ),
