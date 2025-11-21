@@ -1,11 +1,14 @@
-
 import 'package:flutter/material.dart';
 
 class Pokemon {
-  final String name; //nome do pokemon
+  final String name; 
   final List<String> type; //aqui vai ser o tipo do pokemon
-  final int id; //sua identificacao
-  final String num; //numero de cada pokemon
+  final int id; 
+  final String num; //numero de cada pokemon na pokedex
+  final List<String> weaknesses; // lista de fraquezas
+  final String height; 
+  final String weight; 
+  final String egg;
 
   //pega o valor de cada chave e tranforma em seu nome, id e etc...
   factory Pokemon.fromMap(Map<String, dynamic> json) {
@@ -13,22 +16,29 @@ class Pokemon {
         name: json['name'],
         id: json['id'],
         num: json['num'],
-        //aqui precisa garantir que ele e uma lista
-        type: (json['type'] as List)
-            .map(
-              (e) => e as String,
-            )
-            .toList());
+        height: json['height'],
+        weight: json['weight'],
+        egg: json['egg'],
+
+        //aqui ele mapeia a lista de tipos
+        type: (json['type'] as List).map((e) => e as String).toList(),
+        // aqui vai mapear a lista de fraquezas
+        weaknesses: (json['weaknesses'] as List).map((e) => e as String).toList());
   }
 
   Color? get baseColor => _color(type: type[0]);
 
   String get image => 'https://raw.githubusercontent.com/fanzeyi/pokemon.json/master/images/$num.png';
 
-  Pokemon({required this.name,
+  Pokemon({
+    required this.name,
     required this.id,
     required this.num,
-    required this.type
+    required this.type,
+    required this.weaknesses,
+    required this.egg,
+    required this.height,
+    required this.weight
   });
 
   static Color? _color({required String type}) {
