@@ -4,6 +4,7 @@ class TypeWidg extends StatelessWidget {
   const TypeWidg({super.key, required this.name});
   final String name;
 
+ //aqui sao os tipos que vao aparecer do lado da foto do pokemon
   @override
   Widget build(BuildContext context) {
     return Padding(

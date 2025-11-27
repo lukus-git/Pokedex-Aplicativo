@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pokedex/common/models/pokemon.dart';
-import 'package:pokedex/features/pokedex/screens/details/pages/widgets/detail_item_list_widet.dart';
+import 'package:pokedex/features/pokedex/screens/details/pages/widgets/detail_item_list_widget.dart';
 
 class DetailList extends StatelessWidget {
   const DetailList({

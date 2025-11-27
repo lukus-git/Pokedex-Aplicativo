@@ -1,20 +1,30 @@
 import 'package:flutter/material.dart';
-// ⚠️ ATENÇÃO: Corrija o caminho de importação do seu modelo Pokemon
-import 'package:pokedex/common/models/pokemon.dart'; 
+import 'package:pokedex/common/models/pokemon.dart';
+import 'package:provider/provider.dart'; 
+import 'package:pokedex/features/pokedex/screens/home/pages/widgets/app_manager.dart'; 
 
+
+// a parte do tema escuro fiz com ajuda de videos do youtube e IA
 class DetailInfoWidget extends StatelessWidget {
-  // 🚀 ADICIONE ESTA PROPRIEDADE
   final Pokemon pokemon;
-
-  // 🚀 ADICIONE O CONSTRUTOR COM O REQUERIMENTO DO POKEMON
   const DetailInfoWidget({super.key, required this.pokemon});
 
   @override
   Widget build(BuildContext context) {
+    // aqui ta acessando o gerenciador de temas
+    final appManager = Provider.of<AppManager>(context);
+    final isDarkMode = appManager.themeMode == ThemeMode.dark;
+
+    // aqui define as cores
+    final containerColor = isDarkMode ? Colors.grey[850] : Colors.white;
+    final primaryTextColor = isDarkMode ? Colors.white : Colors.black;
+    final detailTextColor = isDarkMode ? Colors.grey[400] : Colors.grey;
+    final dividerColor = isDarkMode ? Colors.grey[700] : Colors.grey[300];
+
     return Container(
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
+      decoration: BoxDecoration(
+        color: containerColor,
+        borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(24),
           topRight: Radius.circular(24),
         ),
@@ -24,100 +34,97 @@ class DetailInfoWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            //  dados do pokemon altura, peso, ovo) 
-            _buildBasicDataRow(),
-            const Divider(height: 30),
+            // aqui  ta passando as cores 
+            _buildBasicDataRow(detailTextColor!, primaryTextColor),
+            Divider(height: 30, color: dividerColor),
 
-            // tipos do pokemon 
-            _buildTypesSection(context),
-            const Divider(height: 30),
+            _buildTypesSection(primaryTextColor),
+            Divider(height: 30, color: dividerColor),
 
-            //  fraquzas do pokemon
-            _buildWeaknessesSection(context),
-
-            // Adicione aqui a seção de Evoluções se quiser expandir
+            _buildWeaknessesSection(primaryTextColor),
           ],
         ),
       ),
     );
   }
+
   
-  
-  // esse widget serve para deixar os dados mias bonitas 
-  Widget _buildDataPoint(String title, String value) {
+  Widget _buildDataPoint(String title, String value, Color titleColor, Color valueColor) {
     return Column(
       children: [
         Text(
           title,
-          style: const TextStyle(fontSize: 14, color: Colors.grey),
+          style: TextStyle(fontSize: 14, color: titleColor),
         ),
         Text(
           value,
-          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: valueColor),
         ),
       ],
     );
   }
 
-  //os widgets de baixo servem para deixar as informaçoes separadas 
-
-  //informacao da altura, peso, e o ovo
-  Widget _buildBasicDataRow() {
-     return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          _buildDataPoint("Altura", pokemon.height),
-          _buildDataPoint("Peso", pokemon.weight),
-          _buildDataPoint("Ovo", pokemon.egg),
-        ],
-      );
+ //aqui e a sessao de informaçoes do pokemon
+  Widget _buildBasicDataRow(Color detailTextColor, Color primaryTextColor) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        _buildDataPoint("Altura", pokemon.height, detailTextColor, primaryTextColor),
+        _buildDataPoint("Peso", pokemon.weight, detailTextColor, primaryTextColor),
+        _buildDataPoint("Ovo", pokemon.egg, detailTextColor, primaryTextColor),
+      ],
+    );
   }
 
-  //informacao dos tipos do pokemon
-  Widget _buildTypesSection(BuildContext context) {
+  // aqui e a sessao dos tipos do pokemon
+  Widget _buildTypesSection(Color primaryTextColor) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
+        Text(
           "Tipos",
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-        ),
-        const SizedBox(height: 10),
-        Wrap(
-          spacing: 8.0, 
-          runSpacing: 4.0,
-          children: pokemon.type.map((type) => Chip(
-            label: Text(
-              type,
-              style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-            ),
-            backgroundColor: pokemon.baseColor,
-          )).toList(),
-        ),
-      ],
-    );
-  }
-  
-  // informacao das fraquezas do pokemon
-  Widget _buildWeaknessesSection(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          "Fraquezas",
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: primaryTextColor),
         ),
         const SizedBox(height: 10),
         Wrap(
           spacing: 8.0,
           runSpacing: 4.0,
-          children: pokemon.weaknesses.map((weakness) => Chip(
-            label: Text(
-              weakness,
-              style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-            ),
-            backgroundColor: Colors.red.withOpacity(0.7),
-          )).toList(),
+          children: pokemon.type
+              .map((type) => Chip(
+                    label: Text(
+                      type,
+                      style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                    ),
+                    backgroundColor: pokemon.baseColor,
+                  ))
+              .toList(),
+        ),
+      ],
+    );
+  }
+
+  // aqui e a sessao de fraquezas do pokemon
+  Widget _buildWeaknessesSection(Color primaryTextColor) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "Fraquezas",
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: primaryTextColor),
+        ),
+        const SizedBox(height: 10),
+        Wrap(
+          spacing: 8.0,
+          runSpacing: 4.0,
+          children: pokemon.weaknesses
+              .map((weakness) => Chip(
+                    label: Text(
+                      weakness,
+                      style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                    ),
+                    backgroundColor: Colors.blueGrey
+                  ))
+              .toList(),
         ),
       ],
     );
