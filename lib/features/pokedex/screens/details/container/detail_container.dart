@@ -42,23 +42,15 @@ Pokemon? _pokemon;
 
 @override
 void initState() {
-    // 1. Acessa o AppManager (listen: false é seguro em initState)
-    // O AppManager precisa ser acessado através do Provider antes do super.initState()
-    // mas em Stateless/Stateful widgets que usam Provider, é comum usar addPostFrameCallback
-    // ou acessar diretamente o Provider aqui, pois o context está disponível.
     
-    // 🚨 AJUSTE CRÍTICO: Buscar o Pokémon completo da lista do AppManager
-    // Usamos Provider.of(context, listen: false) para buscar os dados de forma segura.
     final appManager = Provider.of<AppManager>(context, listen: false);
     final list = appManager.pokemonList;
     final initialIndex = widget.arguments.index;
 
     // Garante que o índice existe na lista antes de acessar
-    if (initialIndex >= 0 && initialIndex < list.length) {
-        // 🚨 INICIALIZA O _POKEMON COM A VERSÃO COMPLETA DA LISTA
+    if (initialIndex >= 0 && initialIndex < list.length) {  
         _pokemon = list[initialIndex];
     } else {
-        // Fallback: usa o objeto passado (pode estar incompleto)
         _pokemon = widget.arguments.pokemon; 
     }
     
